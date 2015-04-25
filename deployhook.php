@@ -24,7 +24,7 @@ function check_htpasswd($filename)
     $pass = @$_SERVER['PHP_AUTH_PW'];
     // apr1 is Apache's implementation of MD5, 2y is bcrypt
     $pattern = '/^'.preg_quote($user).':(\$apr1\$(\w+)\$\w+)$/m';
-    $passwds = (string) file_get_contents($filename);
+    $passwds = (string) @file_get_contents($filename);
     if (! preg_match($pattern, $passwds, $passwd)) return false;
 
     list(, $hash, $salt) = $passwd;
@@ -33,7 +33,7 @@ function check_htpasswd($filename)
 }
 
 if (! check_htpasswd('.htpasswd')) {
-    $access = (string) file_get_contents('.htaccess');
+    $access = (string) @file_get_contents('.htaccess');
     if (preg_match('/^\s*AuthType\s+Basic$/im', $access) &&
         preg_match('/^\s*AuthUserFile\s+(\S+)$/im', $access, $userfile) &&
         preg_match('/^\s*AuthName\s+([\'"]?)(.*)\1$/im', $access, $realm))
@@ -62,34 +62,15 @@ switch (@$_SERVER['QUERY_STRING']) {
         break;
 
     case QUERY_POST:
-
-        /**
-         * Perform upgrades
-         *
-         * @see https://gist.github.com/colinmollenhour/2715268
-         * @author Colin Mollenhour
-         */
-        umask(0);
-        ini_set('memory_limit','512M');
-        set_time_limit(0);
-        require_once 'app/Mage.php';
-
-        // Init without cache so we get a fresh version
-        Mage::app('admin','store', array('global_ban_use_cache' => TRUE));
-        Mage_Core_Model_Resource_Setup::applyAllUpdates();
-        Mage_Core_Model_Resource_Setup::applyAllDataUpdates();
-
-        // Now enable caching and save
-        Mage::getConfig()->getOptions()->setData('global_ban_use_cache', FALSE);
-        Mage::app()->baseInit(array()); // Re-init cache
-        Mage::getConfig()->loadModules()->loadDb()->saveCache();
+        // force config to be read and updates applied
+        include 'shell/cleanCache.php';
 
         // Unset maintenance mode
         unlink('maintenance.flag');
         break;
 
     default:
-        $uri = 'https://' . USER . ':' . PASS . '@';
+        $uri = 'https://' . @$_SERVER['PHP_AUTH_USER'] . ':' . @$_SERVER['PHP_AUTH_PW'] . '@';
         $uri .= $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
 
         header('HTTP/1.0 300 Multiple Choices');
