@@ -10,8 +10,8 @@
 umask(0);
 ini_set('memory_limit','512M');
 set_time_limit(0);
-if(file_exists('app/Mage.php')) require 'app/Mage.php';
-else require '../../app/Mage.php';
+if(file_exists('app/Mage.php')) require_once 'app/Mage.php';
+else require_once '../../app/Mage.php';
 
 // Init without cache so we get a fresh version
 Mage::app('admin','store', array('global_ban_use_cache' => TRUE));
