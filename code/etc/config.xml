@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Knectar_ReleaseManager>
+            <version>0.0.0</version>
+        </Knectar_ReleaseManager>
+    </modules>
+
+    <!-- Some defaults that should be fine for all new sites -->
+    <default>
+        <catalog>
+            <seo>
+                <product_url_suffix></product_url_suffix>
+                <category_url_suffix></category_url_suffix>
+                <category_canonical_tag>1</category_canonical_tag>
+                <!-- product canonical tags are not a good idea for all -->
+            </seo>
+        </catalog>
+        <system>
+            <log>
+                <clean_after_day>30</clean_after_day>
+                <enabled>1</enabled>
+            </log>
+        </system>
+        <dev>
+            <template>
+                <!-- Associated security warning is probably bogus -->
+                <!-- Symlinks are so useful in many deployment strategies -->
+                <allow_symlink>1</allow_symlink>
+            </template>
+        </dev>
+    </default>
+</config>

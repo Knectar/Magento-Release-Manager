@@ -1,2 +1,4 @@
 deployhook.php deployhook.php
 shell/cleanCache.php shell/cleanCache.php
+Knectar_ReleaseManager.xml app/etc/modules/Knectar_ReleaseManager.xml
+code app/code/community/Knectar/ReleaseManager
