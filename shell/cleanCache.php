@@ -16,13 +16,21 @@ else require_once '../../app/Mage.php';
 // Init without cache so we get a fresh version
 Mage::app('admin','store', array('global_ban_use_cache' => TRUE));
 
-echo "Applying updates...\n";
+// Only compile if currently enabled
+@include 'includes/config.php';
+if (defined('COMPILER_INCLUDE_PATH')) {
+    echo 'Recompiling...<br>';
+    Mage::getModel('compiler/process')->run();
+    echo 'Done.<br>';
+}
+
+echo 'Applying updates...<br>';
 Mage_Core_Model_Resource_Setup::applyAllUpdates();
 Mage_Core_Model_Resource_Setup::applyAllDataUpdates();
-echo "Done.\n";
+echo 'Done.<br>';
 
 // Now enable caching and save
 Mage::getConfig()->getOptions()->setData('global_ban_use_cache', FALSE);
 Mage::app()->baseInit(array()); // Re-init cache
 Mage::getConfig()->loadModules()->loadDb()->saveCache();
-echo "Saved config cache.\n";
+echo 'Saved config cache.<br>';

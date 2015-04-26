@@ -62,17 +62,6 @@ switch (@$_SERVER['QUERY_STRING']) {
         break;
 
     case QUERY_POST:
-        // recompile if necessary
-        @include 'includes/config.php';
-        if (defined('COMPILER_INCLUDE_PATH')) {
-            echo "Recompiling...\n";
-            require_once 'app/Mage.php';
-            // cleanCache.php will also initialise in the same way
-            Mage::app('admin','store', array('global_ban_use_cache' => TRUE));
-            Mage::getModel('compiler/process')->run();
-            echo "Done.\n";
-        }
-
         // force config to be read and updates applied
         include 'shell/cleanCache.php';
 
