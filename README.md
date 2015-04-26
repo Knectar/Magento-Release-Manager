@@ -11,6 +11,10 @@ Each release may be different but here we can define some commonality.
 - Category canonical tags are enabled.  This actually is good for SEO.
 - Product canonical tags are not enabled because default canonical URLs do not include category names.
 
+### Override Settings
+
+- Custom Admin Path.  If admin path is still "admin" at time of install then it is changed to "XX-admin" where "XX" is the first two letters of 2nd level domain.
+
 ### Deployment Webhooks
 
 Automated deployments like [dploy.io](http://dploy.io/) or [ftploy.com](http://ftploy.com/) can trigger `/deployhook.php` on your site.

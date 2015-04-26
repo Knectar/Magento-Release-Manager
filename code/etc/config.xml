@@ -30,4 +30,14 @@
             </template>
         </dev>
     </default>
+
+    <global>
+        <resources>
+            <knectarreleasemanager>
+                <setup>
+                    <module>Knectar_ReleaseManager</module>
+                </setup>
+            </knectarreleasemanager>
+        </resources>
+    </global>
 </config>
